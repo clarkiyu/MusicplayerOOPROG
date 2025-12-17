@@ -1,0 +1,49 @@
+package musicplayerapp;
+
+import java.util.Scanner;
+
+import javax.swing.SwingUtilities;
+
+
+
+public class Musicplayerapp {
+	private static Playlist createWeekendPlaylist() {
+      
+        Playlist weekendPlaylist = new Playlist("The Weeknd Top 20 Hits");
+        
+      
+        weekendPlaylist.addTrack(new Track("Blinding Lights", "The Weeknd", 200));
+        weekendPlaylist.addTrack(new Track("Starboy", "The Weeknd ft. Daft Punk", 230));
+        weekendPlaylist.addTrack(new Track("Die For You", "The Weeknd", 260));
+        weekendPlaylist.addTrack(new Track("The Hills", "The Weeknd", 240));
+        weekendPlaylist.addTrack(new Track("Save Your Tears", "The Weeknd", 215));
+        weekendPlaylist.addTrack(new Track("One Of The Girls", "The Weeknd, JENNIE, Lily Rose Depp", 245));
+        weekendPlaylist.addTrack(new Track("Call Out My Name", "The Weeknd", 210));
+        weekendPlaylist.addTrack(new Track("I Feel It Coming", "The Weeknd ft. Daft Punk", 269));
+        weekendPlaylist.addTrack(new Track("Can't Feel My Face", "The Weeknd", 215));
+        weekendPlaylist.addTrack(new Track("Save Your Tears (Remix)", "The Weeknd ft. Ariana Grande", 209));
+        weekendPlaylist.addTrack(new Track("Earned It (Fifty Shades Of Grey)", "The Weeknd", 255));
+        weekendPlaylist.addTrack(new Track("Creepin'", "Metro Boomin, The Weeknd, 21 Savage", 222));
+        weekendPlaylist.addTrack(new Track("Stargirl Interlude", "The Weeknd ft. Lana Del Rey", 111));
+        weekendPlaylist.addTrack(new Track("I Was Never There", "The Weeknd ft. Gesaffelstein", 250));
+        weekendPlaylist.addTrack(new Track("Reminder", "The Weeknd", 220));
+        weekendPlaylist.addTrack(new Track("Moth To A Flame", "Swedish House Mafia & The Weeknd", 246));
+        weekendPlaylist.addTrack(new Track("After Hours", "The Weeknd", 361));
+        weekendPlaylist.addTrack(new Track("Popular", "The Weeknd, Playboi Carti, Madonna", 228));
+        weekendPlaylist.addTrack(new Track("A Tale By Selena", "The Weeknd", 199)); 
+        weekendPlaylist.addTrack(new Track("Often", "The Weeknd", 249)); 
+        
+        return weekendPlaylist;
+    } 
+
+    
+    public static void main(String[] args) {
+        // Create Playlist
+        Playlist weekendPlaylist = createWeekendPlaylist();
+        
+       
+        SwingUtilities.invokeLater(() -> {
+            new MusicPlayerGUI(weekendPlaylist);
+        });
+    }
+}
