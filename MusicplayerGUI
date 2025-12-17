@@ -1,0 +1,129 @@
+package musicplayerapp;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+
+public class MusicPlayerGUI extends JFrame {
+	
+	
+	
+    private PlayerEngine player;
+    private JLabel currentTrackLabel;
+    private JList<String> playlistList;
+    private JButton playButton, pauseButton, stopButton, nextButton, prevButton;
+   
+
+    public MusicPlayerGUI(Playlist playlist) {
+        this.player = new PlayerEngine();
+        this.player.loadPlaylist(playlist);
+        
+        setTitle("The Weeknd Music Player");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout(10, 10)); 
+
+        initComponents(playlist);
+        setupListeners();
+        
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    private void initComponents(Playlist playlist) {
+  
+        JPanel topPanel = new JPanel();
+        currentTrackLabel = new JLabel("Ready: " + playlist.getName(), SwingConstants.CENTER);
+        currentTrackLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+        topPanel.add(currentTrackLabel);
+        add(topPanel, BorderLayout.NORTH);
+
+     
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        for (Track track : playlist.getTracks()) {
+            listModel.addElement(track.getDisplayInfo());
+        }
+        playlistList = new JList<>(listModel);
+        playlistList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane scrollPane = new JScrollPane(playlistList);
+        scrollPane.setPreferredSize(new Dimension(500, 300));
+        add(scrollPane, BorderLayout.CENTER);
+
+      
+        JPanel controlPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
+
+     
+        playButton = new JButton("▶ Play");
+        pauseButton = new JButton("⏸ Pause");
+        stopButton = new JButton("■ Stop");
+        nextButton = new JButton("» Next");
+        prevButton = new JButton("« Prev");
+        
+        controlPanel.add(prevButton);
+        controlPanel.add(playButton);
+        controlPanel.add(pauseButton);
+        controlPanel.add(stopButton);
+        controlPanel.add(nextButton);
+        
+        add(controlPanel, BorderLayout.SOUTH);
+    }
+    
+    
+    private void updateGUIState(String status) {
+        currentTrackLabel.setText(status);
+        
+        int index = player.getCurrentTrackIndex();
+        if (index >= 0) {
+            playlistList.setSelectedIndex(index);
+            playlistList.ensureIndexIsVisible(index);
+        } else {
+             playlistList.clearSelection();
+        }
+    }
+    
+   
+    private void setupListeners() {
+      
+        playButton.addActionListener(e -> {
+            String status = player.play();
+            updateGUIState(status);
+        });
+        
+        pauseButton.addActionListener(e -> {
+            String status = player.pause();
+            updateGUIState(status);
+        });
+        
+        stopButton.addActionListener(e -> {
+            String status = player.stop();
+            updateGUIState(status);
+        });
+        
+        nextButton.addActionListener(e -> {
+            String status = player.nextTrack();
+            updateGUIState(status);
+        });
+        
+        prevButton.addActionListener(e -> {
+            String status = player.previousTrack();
+            updateGUIState(status);
+        });
+        
+        
+        playlistList.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                if (evt.getClickCount() == 2) {
+                    int index = playlistList.locationToIndex(evt.getPoint());
+                    if (index >= 0) {
+                        player.setCurrentTrack(index); 
+                        String status = player.play(); 
+                        updateGUIState(status);
+                    }
+                }
+            }
+        });
+    }
+
+}
