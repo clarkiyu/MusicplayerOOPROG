@@ -1,0 +1,19 @@
+package musicplayerapp;
+
+public abstract class AudioComponent {
+	
+
+    protected String componentName;
+    
+ 
+    public abstract String getDisplayInfo();
+
+    // Constructor
+    public AudioComponent(String name) {
+        this.componentName = name;
+    }
+    
+    public String getComponentName() {
+        return componentName;
+    }
+}
