@@ -1,0 +1,59 @@
+package musicplayerapp;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class Playlist extends AudioComponent implements Playable {
+
+	private List<Track> tracks;
+    private int currentTrackIndex;
+
+   
+    public Playlist(String name) {
+        super(name); 
+        this.tracks = new ArrayList<>();
+        this.currentTrackIndex = 0;
+    }
+
+   
+    @Override
+    public String getDisplayInfo() {
+        return componentName + " (" + tracks.size() + " tracks)";
+    }
+    
+  
+    @Override
+    public void playItem() {
+        if (!tracks.isEmpty()) {
+            Track currentTrack = tracks.get(currentTrackIndex);
+            System.out.println("Playlist.playItem() called: Playing the current track: " + currentTrack.getDisplayInfo());
+            currentTrack.playItem();
+        } else {
+            System.out.println("Playlist is empty. Cannot play.");
+        }
+    }
+    
+  
+    public void addTrack(Track track) {
+        this.tracks.add(track);
+    }
+
+    public List<Track> getTracks() {
+        return tracks;
+    }
+
+    public int getCurrentTrackIndex() {
+        return currentTrackIndex;
+    }
+
+    public void setCurrentTrackIndex(int index) {
+        this.currentTrackIndex = index;
+    }
+
+	public String getName() {
+	
+		return this.componentName;
+	}
+}
+
