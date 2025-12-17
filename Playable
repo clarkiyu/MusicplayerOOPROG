@@ -1,0 +1,11 @@
+package musicplayerapp;
+
+public interface Playable {
+	
+	
+	    
+	
+	    void playItem();
+	}
+
+
