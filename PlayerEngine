@@ -1,0 +1,113 @@
+package musicplayerapp;
+
+public class PlayerEngine {
+	private boolean isPlaying;
+    private Playlist currentPlaylist;
+
+    public PlayerEngine() {
+        this.isPlaying = false;
+        this.currentPlaylist = null;
+    }
+
+    public void loadPlaylist(Playlist playlist) {
+        this.currentPlaylist = playlist;
+        System.out.println("Engine loaded playlist: " + playlist.getName());
+    }
+
+  
+    public void setCurrentTrack(int index) {
+        if (currentPlaylist != null && index >= 0 && index < currentPlaylist.getTracks().size()) {
+            currentPlaylist.setCurrentTrackIndex(index);
+        }
+    }
+    
+  
+    public Track getCurrentTrack() {
+        if (currentPlaylist != null && !currentPlaylist.getTracks().isEmpty()) {
+            return currentPlaylist.getTracks().get(currentPlaylist.getCurrentTrackIndex());
+        }
+        return null;
+    }
+    
+  
+    public int getCurrentTrackIndex() {
+        if (currentPlaylist != null) {
+            return currentPlaylist.getCurrentTrackIndex();
+        }
+        return -1;
+    }
+
+  
+    public String play() {
+        if (currentPlaylist != null && !currentPlaylist.getTracks().isEmpty()) {
+            isPlaying = true;
+            Track currentTrack = getCurrentTrack();
+            String info = "NOW PLAYING: " + currentTrack.getDisplayInfo();
+            System.out.println(info);
+            return info;
+        }
+        return "No playlist loaded or playlist is empty.";
+    }
+
+  
+    public String pause() {
+        if (isPlaying) {
+            isPlaying = false;
+            String status = "PAUSED: " + getCurrentTrack().getComponentName();
+            System.out.println(status);
+            return status;
+        }
+        return "Not currently playing.";
+    }
+
+   
+    public String stop() {
+        if (isPlaying || (currentPlaylist != null && currentPlaylist.getCurrentTrackIndex() != 0)) {
+            isPlaying = false;
+            if (currentPlaylist != null) {
+                currentPlaylist.setCurrentTrackIndex(0);
+            }
+            String status = "STOPPED. Resetting to start of playlist.";
+            System.out.println(status);
+            return status;
+        }
+        return "Player is already stopped.";
+    }
+    
+    // Control: Skip Forward (Updated to use play() for status)
+    public String nextTrack() {
+        if (currentPlaylist != null && !currentPlaylist.getTracks().isEmpty()) {
+            int size = currentPlaylist.getTracks().size();
+            int newIndex = (currentPlaylist.getCurrentTrackIndex() + 1) % size;
+            currentPlaylist.setCurrentTrackIndex(newIndex);
+            
+            if (isPlaying) {
+                System.out.println("SKIPPING to next track...");
+                return play();
+            } else {
+                return "NEXT TRACK selected: " + getCurrentTrack().getComponentName();
+            }
+        }
+        return "No playlist loaded.";
+    }
+
+ 
+    public String previousTrack() {
+        if (currentPlaylist != null && !currentPlaylist.getTracks().isEmpty()) {
+            int size = currentPlaylist.getTracks().size();
+            int newIndex = (currentPlaylist.getCurrentTrackIndex() - 1 + size) % size;
+            currentPlaylist.setCurrentTrackIndex(newIndex);
+            
+            if (isPlaying) {
+                System.out.println("SKIPPING to previous track...");
+                return play();
+            } else {
+                return "PREVIOUS TRACK selected: " + getCurrentTrack().getTitle();
+            }
+        }
+        return "No playlist loaded.";
+    }
+}
+
+
+
