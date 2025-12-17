@@ -1,0 +1,44 @@
+package musicplayerapp;
+
+public class Track extends AudioComponent implements Playable {
+	
+	private String artist;
+    private int durationSeconds; 
+    private final String fileFormat = "MP3/WAV";
+
+    
+    public Track(String title, String artist, int durationSeconds) {
+        super(title); 
+        this.artist = artist;
+        this.durationSeconds = durationSeconds;
+    }
+
+  
+    @Override
+    public String getDisplayInfo() {
+        return componentName + " by " + artist + " (" + getFormattedDuration() + ")";
+    }
+    
+    
+    @Override
+    public void playItem() {
+        System.out.println("Track.playItem() called: Directly playing: " + getDisplayInfo());
+      
+    }
+
+   
+    public String getFormattedDuration() {
+        int minutes = durationSeconds / 60;
+        int seconds = durationSeconds % 60;
+        return String.format("%02d:%02d", minutes, seconds);
+    }
+    
+    public String getArtist() {
+        return this.artist;
+    }
+
+	public String getTitle() {
+		
+		return this.componentName;
+	}
+}
